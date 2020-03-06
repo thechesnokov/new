@@ -1,0 +1,34 @@
+$step: 2; //Кратность отступа
+
+$sides: (
+        "t": "top",
+        "r": "right",
+        "b": "bottom",
+        "l": "left"
+);
+
+$breakpoints: (
+        "min": "screen",
+        "xs": $screen-xs,
+        "sm": $screen-sm,
+        "md": $screen-md,
+        "lg": $screen-lg
+);
+
+@each $prefix, $value in $sides {
+  @each $breakpoint, $screen in $breakpoints {
+    $property: if($breakpoint == "min", "", _#{$breakpoint});
+    @media #{$screen} {
+      $max: 200; //Максимальный отступ
+      @while $max >= 0 {
+        .m#{$prefix}_#{$max}#{$property} {
+          margin-#{$value}: 1px * $max !important;
+        }
+        $max: $max - $step;
+      }
+      .m#{$prefix}_auto#{$property} {
+        margin-#{$value}: auto !important;
+      }
+    }
+  }
+}
